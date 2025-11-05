@@ -306,11 +306,9 @@
     <select id="comprehensiveClaims" name="Comprehensive_Claims__c" class="mt-2 w-full p-2 border border-gray-300 rounded-lg shadow-sm">
       <option value="">--Select--</option>
       <option value="Yes" >Yes</option>
-      <option value="No">No</option>
+      <option value="No" selected>No</option>
     </select>
   </div>
-
-
 
   <div class="mb-3">
     <label for="driverSR22" class="block text-sm font-medium text-gray-700">Is this driver required by the court to file a financial reponsibility filing?<span class="star">*</span></label>
@@ -374,6 +372,15 @@
   <option value="repair_maintenance_grounds">Repair/Maintenance/Grounds</option>
   <option value="sports_recreation">Sports/Recreation</option>
   <option value="travel_transportation_storage">Travel/Transportation/Storage</option>
+  </select>
+</div>
+
+<div id="occupationField" class="mb-3 hidden">
+  <label for="driverOccupation" class="block text-sm font-medium text-gray-700">
+    What is the current occupation for this driver?<span class="star">*</span>
+  </label>
+  <select id="driverOccupation" name="Current_occupation_for_driver__c" class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm">
+    <option value="">--Select--</option>
   </select>
 </div>
 
@@ -453,6 +460,7 @@
     </div>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
+        
   const form = document.getElementById("mainForm");
   const reviewBtn = document.getElementById("reviewBtn");
   const dialog = document.getElementById("dialog");
@@ -460,6 +468,243 @@
   const missingFieldsList = document.getElementById("missingFieldsList");
   const proceedBtn = document.getElementById("proceedBtn");
   const editBtn = document.getElementById("editBtn");
+
+
+  const occupationOptions = {
+    agriculture_forestry_fishing: [
+      "Farm/Ranch Owner",
+      "Laborer/Worker",
+      "Supervisor/Manager",
+      "Other - Agriculture / Forestry / Fishing",
+      "Inspector/Quality Control"
+    ],
+    art_design_media: [
+      "Editor",
+      "Other - Art / Design / Media",
+      "Artist/Writer",
+      "Composer/Director/Producer",
+      "Designer/Photographer",
+      "Performer",
+      "Supervisor/Manager"
+    ],
+   
+    banking_finance_real_estate: [
+  "Analyst",
+  "Appraiser - Real Estate",
+  "Broker",
+  "CSR/Teller",
+  "Manager - Property",
+  "Other - Banking/Finance/Real Estate",
+  "Accountant",
+  "Billing & Collections",
+  "Finance/Insurance/Real Estate Rep",
+  "Financial Advisor/Investor",
+  "Loan Officer",
+  "Sales/Purchasing Rep",
+  "Supervisor/Manager"
+],
+business_sales_office: [
+  "Account Executive",
+  "Administrative Assistant",
+  "Cashier/Checker",
+  "Consultant",
+  "Customer Service Representative",
+  "Accountant/Auditor",
+  "Agent/Broker",
+  "Bookkeeper",
+  "General Office Support",
+  "Human Resource (HR) Specialist",
+  "Manager - Executive/GM",
+  "Manager - Other than Executive/GM",
+  "Manufacturing Rep",
+  "Marketing Specialist",
+  "Receptionist",
+  "Retail Salesperson",
+  "Supervisor/Manager (Retail)",
+  "Supervisor/Manager (Non-Retail)",
+  "Vehicle / Equip Rental Rep",
+  "Other - Business/Office",
+  "Other - Sales"
+],
+construction_energy_mining: [
+  "Electrician/Lineman",
+  "Machine / Equipment Operator",
+  "HVAC Technician",
+  "Laborer/Worker",
+  "Plumber",
+  "Other - Construction / Energy / Mining",
+  "Field Service Technician",
+  "Foreman/Manager/Inspector",
+  "Maintenance/Custodian"
+],
+education_library: [
+  "Counselor",
+  "Librarian/Curator",
+  "Principal / Administrator",
+  "Teacher, K-12",
+  "Other - Education / Library",
+  "Assistant/Aide",
+  "College Professor",
+  "Teacher - Vocational"
+],
+engineer_architect_science_math: [
+  "Engineer",
+  "Technician",
+  "Other - Engineer / Architect",
+  "Analyst - Engineering",
+  "Architect/Drafter",
+  "Scientist/Researcher",
+  "Supervisor/Manager"
+],
+food_service_hotel_services: [
+  "Bartender",
+  "Caterer",
+  "Chef",
+  "Cook/Worker - Fast Food",
+  "Desk Clerk",
+  "Dishwasher",
+  "Housekeeper/Maid",
+  "Food Preparer/Server",
+  "Manager",
+  "Other - Hotel Services",
+  "Other - Food Services"
+],
+government_military: [
+  "Military - Enlisted (E1-E4)",
+  "Military - Warrant Officer (W1-W5)",
+  "US Postal Worker",
+  "Other - Government/Military",
+  "Auditor / Analyst / Examiner",
+  "Military - Officer(E5-O10)",
+  "Supervisor/Manager"
+],
+information_technology: [
+  "Analyst",
+  "Director/Administrator",
+  "Computer Programmer",
+  "Other - Information Technology",
+  "Supervisor/Manager",
+  "Technician"
+],
+insurance: [
+  "Agent/Broker",
+  "Claims Adjuster / Investigator",
+  "Other - Insurance",
+  "Underwriter / Actuary",
+  "Supervisor / Manager"
+],
+legal_law_enforcement_security: [
+  "Correctional or Probation Officer",
+  "Legal Support Staff",
+  "Security Guard",
+  "Other - Legal / Law Enf / Security",
+  "Lawyer / Judge / Mediator",
+  "Fire Fighter",
+  "Police / Highway Patrol / Sheriff",
+  "Detective / Investigator",
+  "Supervisor / Manager"
+],
+medical_social_services_religion: [
+  "Chiropractor",
+  "Clergy",
+  "Licensed Nurse (LPN)",
+  "Registered Nurse (RN)",
+  "Paramedic/E.M.T.",
+  "Pharmacist",
+  "Social Worker",
+  "Veterinarian",
+  "Aide / Attendant",
+  "Assistant / Technician / Therapist",
+  "Dentist / Orthodontist",
+  "Doctor / Surgeon",
+  "Psychologist / Therapist",
+  "Other - Medical/Social Services/Religion"
+],
+personal_care_service: [
+  "Child or Elderly Care Provider",
+  "Dry Cleaning / Laundry Servicer",
+  "Hair / Personal Care Provider",
+  "Cleaner / Housekeeper",
+  "Pet Service Provider",
+  "Other - Personal Care / Service"
+],
+production_manufacturing: [
+  "Machine Operator",
+  "Other - Production / Manufacturing",
+  "Assembler / Fabricator",
+  "Inspector / Quality Control",
+  "Supervisor / Manager"
+],
+repair_maintenance_grounds: [
+  "Custodian/Janitor",
+  "Landscape/Grounds Maintenance",
+  "Other - Repair / Maintenance / Grounds",
+  "Laborer / Helper",
+  "Repair / Mechanic"
+],
+sports_recreation: [
+  "Athlete",
+  "Other - Sports / Recreation",
+  "Admin / Activity Assistant",
+  "Fitness Trainer / Instructor",
+  "Supervisor / Manager"
+],
+travel_transportation_storage: [
+  "Other - Travel / Transportation / Storage",
+  "Driver (All Vehicles)",
+  "Packer / Mover",
+  "Supervisor / Manager"
+]
+
+
+
+  };
+
+  // Get references to dynamic dependency fields
+  const employmentSelect = document.getElementById("currentEmployment");
+  const occupationFieldDiv = document.getElementById("occupationField");
+  const occupationSelect = document.getElementById("driverOccupation");
+
+  // FIELDS FOR SPOUSE/RELATIONSHIP CONDITIONAL LOGIC
+  const relationshipSelect = document.getElementById("driverRelationship");
+
+  // Show and populate occupation options when employment changes
+  function updateOccupationField() {
+    const selectedEmployment = employmentSelect.value;
+
+    if (occupationOptions[selectedEmployment]) {
+      // Show the occupation field
+      occupationFieldDiv.classList.remove("hidden");
+      // Clear and repopulate options
+      occupationSelect.innerHTML = '<option value="">--Select--</option>';
+      occupationOptions[selectedEmployment].forEach(function (option) {
+        const opt = document.createElement('option');
+        opt.value = option;
+        opt.textContent = option;
+        occupationSelect.appendChild(opt);
+      });
+    } else {
+      // Hide and reset occupation field if employment not configured
+      occupationFieldDiv.classList.add("hidden");
+      occupationSelect.innerHTML = '<option value="">--Select--</option>';
+    }
+  }
+
+  // Update occupation field on employment selection change
+  employmentSelect.addEventListener("change", updateOccupationField);
+
+  // If parent employment field gets hidden, make sure occupation field hides too
+  relationshipSelect.addEventListener("change", function () {
+    if (document.getElementById("currentEmploymentField").classList.contains("hidden")) {
+      occupationFieldDiv.classList.add("hidden");
+      occupationSelect.innerHTML = '<option value="">--Select--</option>';
+    } else {
+      updateOccupationField();
+    }
+  });
+
+  // Run once on page load for prefilled and edit scenarios
+  updateOccupationField();
 
   const fieldData = [
     { id: "email", label: "Email", type: "email" },
