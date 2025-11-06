@@ -118,7 +118,7 @@
       <input type="text" id="driverFirstName" name="First_Name__c" class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm" autocomplete="off" />
     </div>
     <div class="flex-1">
-      <label for="driverMiddleName" class="block text-sm font-medium text-gray-700">Middle Name</label>
+      <label for="driverMiddleName" class="block text-sm font-medium text-gray-700">Middle Initial</label>
       <input type="text" id="driverMiddleName" name="Middle_Name__c" class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm" autocomplete="off" />
     </div>
     <div class="flex-1">
@@ -508,6 +508,7 @@
       </div>
     </form>
 
+
     <!-- Confirmation Dialog -->
     <div
       id="dialog"
@@ -549,6 +550,52 @@
   const editBtn = document.getElementById("editBtn");
 const filingStateField = document.getElementById("00NU7000005zuIX");
 const driverSR22Select = document.getElementById("driverSR22");
+//Middle Name Logic
+const middleNameInput = document.getElementById("driverMiddleName");
+middleNameInput.addEventListener("input", function () {
+  if (middleNameInput.value.length > 1) {
+    middleNameInput.value = middleNameInput.value.charAt(0);
+  }
+});
+
+
+
+const licenseStatusField = document.getElementById("driverLicenseStatus");
+
+const comprehensiveClaimsSelect = document.getElementById("comprehensiveClaims");
+
+function checkClaimStatus() {
+        if (comprehensiveClaimsSelect.value === "Yes") {
+          alert("You may expect some changes in the premium.");
+        }
+      }
+
+
+comprehensiveClaimsSelect?.addEventListener("change", checkClaimStatus);
+
+  // Show popup when the selection changes, if not valid
+  licenseStatusField.addEventListener("change", function () {
+    if (licenseStatusField.value !== "Valid") {
+      alert("License status must be Valid to proceed.");
+    }
+  });
+
+  // Override Review/Submit click logic for popup (add at TOP of event listener)
+  reviewBtn.addEventListener("click", function (event) {
+    if (licenseStatusField.value !== "Valid") {
+      alert("License status must be Valid to proceed.");
+      // The validation dialog will still show its error, but user always gets popup first.
+    }
+  });
+
+  // (Optional) Add same logic for Proceed button, so on submit attempt the popup also occurs:
+  proceedBtn.addEventListener("click", function (event) {
+    if (licenseStatusField.value !== "Valid") {
+      alert("License status must be Valid to proceed.");
+      // Prevent dialog close or form submission if you want ONLY valid status
+      // event.preventDefault(); (uncomment if you want to block submit)
+    }
+  });
 
 
 
@@ -793,7 +840,7 @@ toggleFilingStateField();
     } else {
       updateOccupationField();
     }
-  });
+  });relationshipSelect
 
   // Run once on page load for prefilled and edit scenarios
   updateOccupationField();
@@ -816,6 +863,10 @@ toggleFilingStateField();
     { id: "comprehensiveClaims", label: "Has this driver experienced any traffic violations within the last five years or any of the following within the last seven years?" },
     { id: "driverSR22", label: "Is this driver required by the court to file a financial reponsibility filing?" }
   ];
+
+
+ 
+
 
   function isValidDateFormat(value) {
     return /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/.test(value);
@@ -897,49 +948,50 @@ toggleFilingStateField();
     if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
     return age;
   }
+function toggleDriverFields() {
+  const dobInput = document.getElementById("driverDOB");
+  const relationshipSelect = document.getElementById("driverRelationship");
 
-  function toggleDriverFields() {
-    const dobInput = document.getElementById("driverDOB");
-    const relationshipSelect = document.getElementById("driverRelationship");
+   const distantField = document.getElementById("distantStudentDriverField");
+  const goodField = document.getElementById("goodStudentDriverField");
+  const employField = document.getElementById("currentEmploymentField");
+  const occupationFieldDiv = document.getElementById("occupationField");
+  const occupationSelect = document.getElementById("driverOccupation");
+  const educationField = document.getElementById("educationLevelField");
 
-    const distantField = document.getElementById("distantStudentDriverField");
-    const goodField = document.getElementById("goodStudentDriverField");
-    const employField = document.getElementById("currentEmploymentField");
-    const educationField = document.getElementById("educationLevelField");
+  const age = calculateAge(dobInput.value.trim());
+  const relationship = relationshipSelect.value;
 
-    const age = calculateAge(dobInput.value.trim());
-    const relationship = relationshipSelect.value;
-
-    if (age !== null && age < 25 && relationship !== "" && relationship !== "Spouse") {
-      distantField.classList.remove("hidden");
-      goodField.classList.remove("hidden");
-    } else {
-      distantField.classList.add("hidden");
-      goodField.classList.add("hidden");
-    }
-
-    if (relationship === "Spouse") {
-      employField.classList.remove("hidden");
-      educationField.classList.remove("hidden");
-    } else {
-      employField.classList.add("hidden");
-      educationField.classList.add("hidden");
-    }
+  if (age !== null && age < 25 && relationship !== "" && relationship !== "Spouse") {
+    distantField.classList.remove("hidden");
+    goodField.classList.remove("hidden");
+  } else {
+    distantField.classList.add("hidden");
+    goodField.classList.add("hidden");
   }
 
-  document.getElementById("driverDOB").addEventListener("change", toggleDriverFields);
-  document.getElementById("driverRelationship").addEventListener("change", toggleDriverFields);
-  toggleDriverFields();
+  if (relationship === "Spouse") {
+    employField.classList.remove("hidden");
+    occupationFieldDiv.classList.remove("hidden");
+    updateOccupationField(); // Populate occupation options accordingly
+    educationField.classList.remove("hidden");
+  } else {
+    employField.classList.add("hidden");
+    occupationFieldDiv.classList.add("hidden");
+    occupationSelect.innerHTML = '<option value="">--Select--</option>'; // reset occupation options
+    educationField.classList.add("hidden");
+  }
+}
+
+document.getElementById("driverDOB").addEventListener("change", toggleDriverFields);
+document.getElementById("driverRelationship").addEventListener("change", toggleDriverFields);
+toggleDriverFields();
 
   // Comprehensive validation function for review button and submit
   function validateAll() {
     let errors = [];
 
-    // License status check
-    const licenseStatus = document.getElementById("driverLicenseStatus").value;
-    if (licenseStatus !== "Valid") {
-      errors.push("Cannot add a driver unless they have a valid license.");
-    }
+   
 
     // Spouse-single check
     if (!validateSpouseSingle()) {
