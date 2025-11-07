@@ -656,7 +656,7 @@ comprehensiveClaimsSelect?.addEventListener("change", checkClaimStatus);
   "Other - Business/Office",
   "Other - Sales"
 ],
-construction_energy_mining: [
+"Construction/Energy/Mining": [
   "Electrician/Lineman",
   "Machine / Equipment Operator",
   "HVAC Technician",
@@ -667,7 +667,7 @@ construction_energy_mining: [
   "Foreman/Manager/Inspector",
   "Maintenance/Custodian"
 ],
-education_library: [
+"Education/Library": [
   "Counselor",
   "Librarian/Curator",
   "Principal / Administrator",
@@ -677,7 +677,7 @@ education_library: [
   "College Professor",
   "Teacher - Vocational"
 ],
-engineer_architect_science_math: [
+"Engineer/Architect/Science/Math": [
   "Engineer",
   "Technician",
   "Other - Engineer / Architect",
@@ -686,7 +686,7 @@ engineer_architect_science_math: [
   "Scientist/Researcher",
   "Supervisor/Manager"
 ],
-food_service_hotel_services: [
+"Food Service/Hotel Services": [
   "Bartender",
   "Caterer",
   "Chef",
@@ -699,7 +699,7 @@ food_service_hotel_services: [
   "Other - Hotel Services",
   "Other - Food Services"
 ],
-government_military: [
+"Government/Military": [
   "Military - Enlisted (E1-E4)",
   "Military - Warrant Officer (W1-W5)",
   "US Postal Worker",
@@ -708,7 +708,7 @@ government_military: [
   "Military - Officer(E5-O10)",
   "Supervisor/Manager"
 ],
-information_technology: [
+"Information Technology": [
   "Analyst",
   "Director/Administrator",
   "Computer Programmer",
@@ -716,14 +716,14 @@ information_technology: [
   "Supervisor/Manager",
   "Technician"
 ],
-insurance: [
+"Insurance": [
   "Agent/Broker",
   "Claims Adjuster / Investigator",
   "Other - Insurance",
   "Underwriter / Actuary",
   "Supervisor / Manager"
 ],
-legal_law_enforcement_security: [
+"Legal/Law Enforcement/Security": [
   "Correctional or Probation Officer",
   "Legal Support Staff",
   "Security Guard",
@@ -734,7 +734,7 @@ legal_law_enforcement_security: [
   "Detective / Investigator",
   "Supervisor / Manager"
 ],
-medical_social_services_religion: [
+"Medical/Social Services/Religion": [
   "Chiropractor",
   "Clergy",
   "Licensed Nurse (LPN)",
@@ -750,7 +750,7 @@ medical_social_services_religion: [
   "Psychologist / Therapist",
   "Other - Medical/Social Services/Religion"
 ],
-personal_care_service: [
+"Personal Care/Service": [
   "Child or Elderly Care Provider",
   "Dry Cleaning / Laundry Servicer",
   "Hair / Personal Care Provider",
@@ -758,28 +758,28 @@ personal_care_service: [
   "Pet Service Provider",
   "Other - Personal Care / Service"
 ],
-production_manufacturing: [
+"Production/Manufacturing": [
   "Machine Operator",
   "Other - Production / Manufacturing",
   "Assembler / Fabricator",
   "Inspector / Quality Control",
   "Supervisor / Manager"
 ],
-repair_maintenance_grounds: [
+"Repair/Maintenance/Grounds": [
   "Custodian/Janitor",
   "Landscape/Grounds Maintenance",
   "Other - Repair / Maintenance / Grounds",
   "Laborer / Helper",
   "Repair / Mechanic"
 ],
-sports_recreation: [
+"Sports/Recreation": [
   "Athlete",
   "Other - Sports / Recreation",
   "Admin / Activity Assistant",
   "Fitness Trainer / Instructor",
   "Supervisor / Manager"
 ],
-travel_transportation_storage: [
+"Travel/Transportation/Storage": [
   "Other - Travel / Transportation / Storage",
   "Driver (All Vehicles)",
   "Packer / Mover",
@@ -963,7 +963,7 @@ function toggleDriverFields() {
   const age = calculateAge(dobInput.value.trim());
   const relationship = relationshipSelect.value;
 
-  if (age !== null && age < 25 && relationship !== "" && relationship !== "Spouse") {
+  if (age !== null && age <= 25 && relationship !== "" && relationship !== "Spouse") {
     distantField.classList.remove("hidden");
     goodField.classList.remove("hidden");
   } else {
