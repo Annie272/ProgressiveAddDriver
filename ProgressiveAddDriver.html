@@ -429,28 +429,28 @@
   </label>
   <select id="currentEmployment" name="Current_Employment_for_Driver__c" class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm">
     <option value="">--Select--</option>
-     <option value="household_manager">Household Manager/Stay-at-home duties (full-time)</option>
-  <option value="retired">Retired (not employed)</option>
-  <option value="not_employed">Not currently employed</option>
-  <option value="student">Full-time student (not employed or part-time employed)</option>
-  <option value="agriculture_forestry_fishing">Agriculture/Forestry/Fishing</option>
-  <option value="art_design_media">Art/Design/Media</option>
-  <option value="banking_finance_real_estate">Banking/Finance/Real Estate</option>
-  <option value="business_sales_office">Business/Sales/Office</option>
-  <option value="construction_energy_mining">Construction/Energy/Mining</option>
-  <option value="education_library">Education/Library</option>
-  <option value="engineer_architect_science_math">Engineer/Architect/Science/Math</option>
-  <option value="food_service_hotel_services">Food Service/Hotel Services</option>
-  <option value="government_military">Government/Military</option>
-  <option value="information_technology">Information Technology</option>
-  <option value="insurance">Insurance</option>
-  <option value="legal_law_enforcement_security">Legal/Law Enforcement/Security</option>
-  <option value="medical_social_services_religion">Medical/Social Services/Religion</option>
-  <option value="personal_care_service">Personal Care/Service</option>
-  <option value="production_manufacturing">Production/Manufacturing</option>
-  <option value="repair_maintenance_grounds">Repair/Maintenance/Grounds</option>
-  <option value="sports_recreation">Sports/Recreation</option>
-  <option value="travel_transportation_storage">Travel/Transportation/Storage</option>
+    <option value="Household Manager/Stay-at-home duties (full-time)">Household Manager/Stay-at-home duties (full-time)</option>
+  <option value="Retired (not employed)">Retired (not employed)</option>
+  <option value="Not currently employed">Not currently employed</option>
+  <option value="Full-time student (not employed or part-time employed)">Full-time student (not employed or part-time employed)</option>
+  <option value="Agriculture/Forestry/Fishing">Agriculture/Forestry/Fishing</option>
+  <option value="Art/Design/Media">Art/Design/Media</option>
+  <option value="Banking/Finance/Real Estate">Banking/Finance/Real Estate</option>
+  <option value="Business/Sales/Office">Business/Sales/Office</option>
+  <option value="Construction/Energy/Mining">Construction/Energy/Mining</option>
+  <option value="Education/Library">Education/Library</option>
+  <option value="Engineer/Architect/Science/Math">Engineer/Architect/Science/Math</option>
+  <option value="Food Service/Hotel Services">Food Service/Hotel Services</option>
+  <option value="Government/Military">Government/Military</option>
+  <option value="Information Technology">Information Technology</option>
+  <option value="Insurance">Insurance</option>
+  <option value="Legal/Law Enforcement/Security">Legal/Law Enforcement/Security</option>
+  <option value="Medical/Social Services/Religion">Medical/Social Services/Religion</option>
+  <option value="Personal Care/Service">Personal Care/Service</option>
+  <option value="Production/Manufacturing">Production/Manufacturing</option>
+  <option value="Repair/Maintenance/Grounds">Repair/Maintenance/Grounds</option>
+  <option value="Sports/Recreation">Sports/Recreation</option>
+  <option value="Travel/Transportation/Storage">Travel/Transportation/Storage</option>
   </select>
 </div>
 
@@ -600,14 +600,14 @@ comprehensiveClaimsSelect?.addEventListener("change", checkClaimStatus);
 
 
   const occupationOptions = {
-    agriculture_forestry_fishing: [
+    "Agriculture/Forestry/Fishing": [
       "Farm/Ranch Owner",
       "Laborer/Worker",
       "Supervisor/Manager",
       "Other - Agriculture / Forestry / Fishing",
       "Inspector/Quality Control"
     ],
-    art_design_media: [
+    "Art/Design/Media": [
       "Editor",
       "Other - Art / Design / Media",
       "Artist/Writer",
@@ -617,7 +617,7 @@ comprehensiveClaimsSelect?.addEventListener("change", checkClaimStatus);
       "Supervisor/Manager"
     ],
    
-    banking_finance_real_estate: [
+    "Banking/Finance/Real Estate": [
   "Analyst",
   "Appraiser - Real Estate",
   "Broker",
@@ -632,7 +632,8 @@ comprehensiveClaimsSelect?.addEventListener("change", checkClaimStatus);
   "Sales/Purchasing Rep",
   "Supervisor/Manager"
 ],
-business_sales_office: [
+
+"Business/Sales/Office": [
   "Account Executive",
   "Administrative Assistant",
   "Cashier/Checker",
