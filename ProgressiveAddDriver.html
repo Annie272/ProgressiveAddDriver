@@ -422,6 +422,20 @@
   </select>
 </div>
 
+<div id="goodStudentDriverNote" class="hidden mt-4 w-full rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm leading-relaxed text-gray-800">
+ <p class="font-semibold text-blue-800"></p>
+    <strong>Note:</strong> Please email proof of recent grades showing GPA 3.0 or higher to
+    <a href="mailto:agency@bennettandporter.com" class="text-blue-600 underline">
+      agency@bennettandporter.com
+    </a>.
+  </p>
+  <p>
+    If proof of grades not received within 5 days, discount will be removed.
+  </p>
+</div>
+
+
+
 <!-- Current Employment (shown if relationship is Spouse) -->
 <div id="currentEmploymentField" class="mb-3 hidden">
   <label for="currentEmployment" class="block text-sm font-medium text-gray-700">
@@ -495,8 +509,8 @@
       <input type="hidden" name="company" value="Test Company" />
       <input type="hidden" name="Debug_Notes__c" value="Progressive Test: 2025-06-27 07:21AM" />
       <input type="hidden" name="delete_Action_Form__c" value="1" />
-                <input type="hidden" name="Carrier__c" value ="Progressive">
-
+       <input type="hidden" id="formDataJson" name="Form_Captured_Data__c" value="" />
+      <input type="hidden" id="missingFormData" name="Form_Missing_Data__c" value="" />
 
       <!-- Submit button -->
       <div class="flex justify-end mt-6">
@@ -875,6 +889,99 @@ toggleFilingStateField();
     return /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/.test(value);
   }
 
+
+
+let formDataJsonInput = document.getElementById("formDataJson");
+  if (!formDataJsonInput) {
+    formDataJsonInput = document.createElement("input");
+    formDataJsonInput.type = "hidden";
+    formDataJsonInput.id = "formDataJson";
+    formDataJsonInput.name = "Form_Captured_Data__c";
+    form.appendChild(formDataJsonInput);
+  }
+
+  let missingFormDataInput = document.getElementById("missingFormData");
+  if (!missingFormDataInput) {
+    missingFormDataInput = document.createElement("input");
+    missingFormDataInput.type = "hidden";
+    missingFormDataInput.id = "missingFormData";
+    missingFormDataInput.name = "Form_Missing_Data__c";
+    form.appendChild(missingFormDataInput);
+  }
+
+  // Validate required fields
+  function validateFields() {
+    const missing = [];
+    fieldData.forEach((field) => {
+      const input = document.getElementById(field.id);
+      if (field.type === "email") {
+        if (!input.value.trim() || !input.checkValidity()) {
+          missing.push(field.label);
+        }
+      } else if (field.type === "date") {
+        // Simple date format check, adjust as needed
+        if (!input.value.trim() /* || add date format validation */) {
+          missing.push(field.label);
+        }
+      } else {
+        if (!input.value.trim()) {
+          missing.push(field.label);
+        }
+      }
+    });
+    return missing;
+  }
+
+  reviewBtn.addEventListener("click", () => {
+    let missing = validateFields();
+
+    const completedData = [];
+    fieldData.forEach((field) => {
+      const input = document.getElementById(field.id);
+      const value = input.value.trim();
+      if (!missing.includes(field.label) && value) {
+        completedData.push(`${field.label} = ${value}`);
+      }
+    });
+
+    // Store completed data in hidden field
+    formDataJsonInput.value = completedData.join("\n");
+
+    // Store missing fields in hidden field
+    missingFormDataInput.value = missing.join("\n");
+
+    if (missing.length) {
+      dialogTitle.textContent = "Below Mandatory Fields are missing and the Team will contact you shortly.";
+      missingFieldsList.innerHTML = missing.map((f) => `<li>${f}</li>`).join("");
+    } else {
+      dialogTitle.textContent = "All mandatory fields are completed. Ready to submit your request?";
+      missingFieldsList.innerHTML = "";
+    }
+
+    dialog.classList.remove("hidden");
+  });
+
+  editBtn.addEventListener("click", () => {
+    dialog.classList.add("hidden");
+  });
+
+  proceedBtn.addEventListener("click", () => {
+    dialog.classList.add("hidden");
+    form.submit();
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === dialog) {
+      dialog.classList.add("hidden");
+    }
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !dialog.classList.contains("hidden")) {
+      dialog.classList.add("hidden");
+    }
+  });
+  
+
   function validateFields() {
   const missing = [];
   let dynamicFieldData = [...fieldData];
@@ -954,6 +1061,7 @@ toggleFilingStateField();
 function toggleDriverFields() {
   const dobInput = document.getElementById("driverDOB");
   const relationshipSelect = document.getElementById("driverRelationship");
+  const goodNote = document.getElementById('goodStudentDriverNote');
 
    const distantField = document.getElementById("distantStudentDriverField");
   const goodField = document.getElementById("goodStudentDriverField");
@@ -968,9 +1076,13 @@ function toggleDriverFields() {
   if (age !== null && age <= 25 && relationship !== "" && relationship !== "Spouse") {
     distantField.classList.remove("hidden");
     goodField.classList.remove("hidden");
+        goodNote.classList.remove('hidden');
+
   } else {
     distantField.classList.add("hidden");
     goodField.classList.add("hidden");
+        goodNote.classList.add('hidden');
+
   }
 
   if (relationship === "Spouse") {
