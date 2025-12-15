@@ -1125,7 +1125,7 @@ toggleDriverFields();
     const errors = validateAll();
 
     if (errors.length) {
-      dialogTitle.textContent = "Validation Errors";
+      dialogTitle.textContent = "Below Mandatory Fields are missing and the Team will contact you shortly.";
       missingFieldsList.innerHTML = errors.map(err => `<li>${err}</li>`).join("");
       dialog.classList.remove("hidden");
     } else {
